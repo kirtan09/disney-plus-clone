@@ -44,6 +44,7 @@ const Container = styled.div`
   min-height: calc(100vh - 70px);
   padding: 0 calc(3.5vw + 5px);
   position: relative;
+  overflow: hidden;
 `;
 
 const Background = styled.div`
@@ -65,9 +66,7 @@ const ImageTitle = styled.div`
   width: 25vw;
   min-height: 170px;
   min-width: 200px;
-  max-height: 20vh;
-  max-width: 25vw;
-  padding: 30px 0px 0px 0px;
+  margin-top: 60px;
 
   img {
     width: 100%;
@@ -143,4 +142,5 @@ const Description = styled.div`
   font-size: 18px;
   line-height: 1.4;
   margin-top: 15px;
+  max-width: 750px;
 `;
