@@ -1,20 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useHistory, useParams } from 'react-router-dom';
+import db from '../../firebase';
 
 function Details() {
+  const { id } = useParams();
+  const [selectedMovie, setSelectedMovie] = useState();
+  const history = useHistory();
+
+  useEffect(() => {
+    db.collection('movies')
+      .doc(id)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          setSelectedMovie(doc.data());
+        } else {
+          history.push('/');
+        }
+      });
+  }, [id, history]);
+
+  if (!selectedMovie) {
+    return null;
+  }
+
   return (
     <Container>
       <Background>
-        <img
-          src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/4F39B7E16726ECF419DD7C49E011DD95099AA20A962B0B10AA1881A70661CE45/scale?width=1440&aspectRatio=1.78&format=jpeg"
-          alt=""
-        />
+        <img src={selectedMovie.backgroundImg} alt="BackgroundImage" />
       </Background>
       <ImageTitle>
-        <img
-          src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D7AEE1F05D10FC37C873176AAA26F777FC1B71E7A6563F36C6B1B497CAB1CEC2/scale?width=1440&aspectRatio=1.78"
-          alt=""
-        />
+        <img src={selectedMovie.titleImg} alt={selectedMovie.title} />
       </ImageTitle>
       <Controls>
         <PlayButton>
@@ -32,8 +49,8 @@ function Details() {
           <img src="/images/group-icon.png" alt="" />
         </GroupWatchButton>
       </Controls>
-      <SubTitle>2018 . 7m . Family, Kids, Fantasy</SubTitle>
-      <Description>Testing Description</Description>
+      <SubTitle>{selectedMovie.subTitle}</SubTitle>
+      <Description>{selectedMovie.description}</Description>
     </Container>
   );
 }
@@ -139,8 +156,8 @@ const SubTitle = styled.div`
 
 const Description = styled.div`
   color: rgb(249, 249, 249);
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.4;
   margin-top: 15px;
-  max-width: 750px;
+  max-width: 700px;
 `;

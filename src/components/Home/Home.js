@@ -4,23 +4,31 @@ import ImageSlider from '../ImageSlider/ImageSlider';
 import Viewers from '../Viewers/Viewers';
 import Movies from '../Movies/Movies';
 import db from '../../firebase';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setMovies } from '../../features/movie/movieSlice';
+import { useHistory, withRouter } from 'react-router-dom';
+import { selectUserName } from '../../features/user/userSlice';
 
 function Home() {
   const dispatch = useDispatch();
+  const userName = useSelector(selectUserName);
+  const history = useHistory();
 
   useEffect(() => {
-    db.collection('movies').onSnapshot((snapshot) => {
-      let tempMovies = snapshot.docs.map((doc) => {
-        return {
-          id: doc.id,
-          ...doc.data(),
-        };
+    if (userName) {
+      db.collection('movies').onSnapshot((snapshot) => {
+        let tempMovies = snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        });
+        dispatch(setMovies(tempMovies));
       });
-      dispatch(setMovies(tempMovies));
-    });
-  }, []);
+    } else {
+      history.push('/login');
+    }
+  }, [userName, dispatch, history]);
 
   return (
     <Container>
@@ -31,7 +39,7 @@ function Home() {
   );
 }
 
-export default Home;
+export default withRouter(Home);
 
 const Container = styled.main`
   min-height: calc(100vh - 70px);
