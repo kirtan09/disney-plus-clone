@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import ImageSlider from '../ImageSlider/ImageSlider';
 import Viewers from '../Viewers/Viewers';
-import Movies from '../Movies/Movies';
+import Recommends from '../Movies/Movies';
 import db from '../../firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMovies } from '../../features/movie/movieSlice';
@@ -16,14 +16,37 @@ function Home() {
 
   useEffect(() => {
     if (userName) {
+      let recommends = [];
+      let newDisney = [];
+      let originals = [];
+      let trending = [];
       db.collection('movies').onSnapshot((snapshot) => {
-        let tempMovies = snapshot.docs.map((doc) => {
-          return {
-            id: doc.id,
-            ...doc.data(),
-          };
+        snapshot.docs.map((doc) => {
+          switch (doc.data().type) {
+            case 'recommend':
+              recommends.push({ id: doc.id, ...doc.data() });
+              break;
+            case 'new':
+              newDisney.push({ id: doc.id, ...doc.data() });
+              break;
+            case 'original':
+              originals.push({ id: doc.id, ...doc.data() });
+              break;
+            case 'trending':
+              trending.push({ id: doc.id, ...doc.data() });
+              break;
+            default:
+              break;
+          }
         });
-        dispatch(setMovies(tempMovies));
+        dispatch(
+          setMovies({
+            recommends: recommends,
+            newDisney: newDisney,
+            originals: originals,
+            trending: trending,
+          })
+        );
       });
     } else {
       history.push('/login');
@@ -34,7 +57,7 @@ function Home() {
     <Container>
       <ImageSlider />
       <Viewers />
-      <Movies />
+      <Recommends />
     </Container>
   );
 }
