@@ -7,21 +7,45 @@ import { Link } from 'react-router-dom';
 function Movies() {
   const movies = useSelector(selectMovies);
 
+  if (!movies.recommends) return null;
+
   return (
     <Container>
-      <h4>Recommended for you</h4>
-      <Content>
-        {movies &&
-          movies.map((movie) => {
-            return (
-              <Wrap key={movie.id}>
-                <Link to={`/details/${movie.id}`}>
-                  <img src={movie.cardImg} alt={movie.title} />
-                </Link>
-              </Wrap>
-            );
-          })}
-      </Content>
+      {Object.entries(movies).map(([key, values]) => {
+        let heading = '';
+        switch (key) {
+          case 'recommends':
+            heading = 'Recommended for you';
+            break;
+          case 'newDisney':
+            heading = 'New to Disney+';
+            break;
+          case 'originals':
+            heading = 'Originals';
+            break;
+          case 'trending':
+            heading = 'Trending';
+            break;
+          default:
+            break;
+        }
+        return (
+          <>
+            <h4>{heading}</h4>
+            <Content>
+              {values.map((movie) => {
+                return (
+                  <Wrap key={movie.id}>
+                    <Link to={`/details/${movie.id}`}>
+                      <img src={movie.cardImg} alt={movie.title} />
+                    </Link>
+                  </Wrap>
+                );
+              })}
+            </Content>
+          </>
+        );
+      })}
     </Container>
   );
 }
