@@ -38,6 +38,7 @@ function Home() {
             default:
               break;
           }
+          return null;
         });
         dispatch(
           setMovies({
