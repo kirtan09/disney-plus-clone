@@ -30,7 +30,7 @@ function Movies() {
             break;
         }
         return (
-          <>
+          <Container key={key}>
             <h4>{heading}</h4>
             <Content>
               {values.map((movie) => {
@@ -43,7 +43,7 @@ function Movies() {
                 );
               })}
             </Content>
-          </>
+          </Container>
         );
       })}
     </Container>
