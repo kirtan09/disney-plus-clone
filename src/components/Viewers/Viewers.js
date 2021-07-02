@@ -1,41 +1,92 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 
 function Viewers() {
+  const disneyVidRef = useRef(null);
+  const pixarVidRef = useRef(null);
+  const marvelVidRef = useRef(null);
+  const starWarsVidRef = useRef(null);
+  const nationalVidRef = useRef(null);
+
+  const videoMouseOver = (vidRef) => {
+    vidRef.current.play();
+  };
+
+  const videoMouseOut = (vidRef) => {
+    var isPlaying = vidRef.current.currentTime > 0;
+
+    if (isPlaying) {
+      vidRef.current.currentTime = 0;
+      vidRef.current.pause();
+    }
+  };
+
   return (
     <Item>
-      <Wrap>
+      <Wrap
+        onMouseOver={() => videoMouseOver(disneyVidRef)}
+        onMouseOut={() => videoMouseOut(disneyVidRef)}
+      >
         <img src="/images/viewers-disney.png" alt="disney" />
-        <video autoPlay={true} loop={true} playsInline={true}>
-          <source src="/videos/1564674844-disney.mp4" type="video/mp4" />
-        </video>
+        <video
+          ref={disneyVidRef}
+          loop={true}
+          playsInline={true}
+          src="/videos/1564674844-disney.mp4"
+          type="video/mp4"
+        />
       </Wrap>
-      <Wrap>
+      <Wrap
+        onMouseOver={() => videoMouseOver(pixarVidRef)}
+        onMouseOut={() => videoMouseOut(pixarVidRef)}
+      >
         <img src="/images/viewers-pixar.png" alt="pixar" />
-        <video autoPlay={true} loop={true} playsInline={true}>
-          <source src="/videos/1564676714-pixar.mp4" type="video/mp4" />
-        </video>
+        <video
+          ref={pixarVidRef}
+          loop={true}
+          playsInline={true}
+          src="/videos/1564676714-pixar.mp4"
+          type="video/mp4"
+        />
       </Wrap>
-      <Wrap>
+      <Wrap
+        onMouseOver={() => videoMouseOver(marvelVidRef)}
+        onMouseOut={() => videoMouseOut(marvelVidRef)}
+      >
         <img src="/images/viewers-marvel.png" alt="marvel" />
-        <video autoPlay={true} loop={true} playsInline={true}>
-          <source src="/videos/1564676115-marvel.mp4" type="video/mp4" />
-        </video>
+        <video
+          ref={marvelVidRef}
+          loop={true}
+          playsInline={true}
+          src="/videos/1564676115-marvel.mp4"
+          type="video/mp4"
+        />
       </Wrap>
-      <Wrap>
+      <Wrap
+        onMouseOver={() => videoMouseOver(starWarsVidRef)}
+        onMouseOut={() => videoMouseOut(starWarsVidRef)}
+      >
         <img src="/images/viewers-starwars.png" alt="star-wars" />
-        <video autoPlay={true} loop={true} playsInline={true}>
-          <source src="/videos/1608229455-star-wars.mp4" type="video/mp4" />
-        </video>
+        <video
+          ref={starWarsVidRef}
+          loop={true}
+          playsInline={true}
+          src="/videos/1608229455-star-wars.mp4"
+          type="video/mp4"
+        />
       </Wrap>
-      <Wrap>
+      <Wrap
+        onMouseOver={() => videoMouseOver(nationalVidRef)}
+        onMouseOut={() => videoMouseOut(nationalVidRef)}
+      >
         <img src="/images/viewers-national.png" alt="national" />
-        <video autoPlay={true} loop={true} playsInline={true}>
-          <source
-            src="/videos/1564676296-national-geographic.mp4"
-            type="video/mp4"
-          />
-        </video>
+        <video
+          ref={nationalVidRef}
+          loop={true}
+          playsInline={true}
+          src="/videos/1564676296-national-geographic.mp4"
+          type="video/mp4"
+        />
       </Wrap>
     </Item>
   );
