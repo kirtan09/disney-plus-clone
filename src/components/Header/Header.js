@@ -87,7 +87,9 @@ function Header() {
               <span>SERIES</span>
             </a>
           </NavMenu>
-          <UserImg onClick={signOut} src={userPhoto} alt="Icon" />
+          <LoginContainer>
+            <UserImg onClick={signOut} src={userPhoto} alt="Icon" />
+          </LoginContainer>
         </>
       )}
     </Nav>
@@ -114,6 +116,10 @@ const NavMenu = styled.div`
   flex: 1;
   margin-left: 25px;
   align-items: center;
+
+  @media only screen and (max-width: 880px) {
+    display: none;
+  }
 
   a {
     display: flex;
@@ -160,6 +166,7 @@ const UserImg = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  cursor: pointer;
 `;
 
 const Login = styled.div`
